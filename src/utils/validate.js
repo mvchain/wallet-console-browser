@@ -34,8 +34,8 @@ export function validatAlphabets(str) {
 export function balanceVerification(v) {
   const reg = /^[0-9]+\.?[0-9]{0,9}$/
   if (reg.test(v)) {
-    return true;
+    return true
   } else {
-    return false;
+    return false
   }
 }

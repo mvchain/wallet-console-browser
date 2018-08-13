@@ -42,7 +42,6 @@
 
 <script>
   import md5 from 'blueimp-md5'
-  import axi from 'axios'
 
   export default {
     name: 'login',
