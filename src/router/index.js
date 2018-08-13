@@ -39,34 +39,19 @@ export const constantRouterMap = [
     component: Layout,
     redirect: '/projectManage/projectIndex',
     name: 'projectManage',
-    meta: { title: '项目管理', icon: 'example' },
+    meta: { title: '充提管理', icon: 'example' },
     children: [
       {
         path: 'projectIndex',
         name: 'projectIndex',
         component: _import('projectManage/index'),
-        meta: { title: '项目管理', icon: 'example' }
+        meta: { title: '充值记录', icon: 'example' }
       },
       {
         path: 'projectData',
         name: 'projectData',
-        hidden: true,
         component: _import('projectManage/projectData/index'),
-        meta: { title: '项目数据', icon: 'example' }
-      },
-      {
-        path: 'projectEdit',
-        name: 'projectEdit',
-        hidden: true,
-        component: _import('projectManage/projectEdit/index'),
-        meta: { title: '项目编辑', icon: 'example' }
-      },
-      {
-        path: 'addProject',
-        name: 'addProject',
-        hidden: true,
-        component: _import('projectManage/addProject/index'),
-        meta: { title: '新建项目', icon: 'example' }
+        meta: { title: '提币记录', icon: 'example' }
       }
     ]
   },
@@ -75,50 +60,19 @@ export const constantRouterMap = [
     component: Layout,
     redirect: '/userManage/basicInfo',
     name: 'userManage',
-    meta: { title: '用户管理', icon: 'table' },
+    meta: { title: '数据统计', icon: 'table' },
     children: [
       {
         path: 'basicInfo',
         name: 'basicInfo',
         component: _import('userManage/basicInfo/index'),
-        meta: { title: '用户列表', icon: 'table' }
+        meta: { title: '充值数据', icon: 'table' }
       },
       {
         path: 'userInfo',
         name: 'userInfo',
-        hidden: true,
         component: _import('userManage/userInfo/index'),
-        meta: { title: '用户详情', icon: 'table' }
-      }
-    ]
-  },
-  {
-    path: '/rechargeWithdraw',
-    component: Layout,
-    redirect: '/rechargeWithdraw/rwManage',
-    name: 'rechargeWithdraw',
-    meta: { title: '充提管理', icon: 'teacher' },
-    children: [
-      {
-        path: 'rwManage',
-        name: 'rwManage',
-        component: _import('rechargeWithdraw/index'),
-        meta: { title: '充提', icon: 'teacher' }
-      }
-    ]
-  },
-  {
-    path: '/backSetting',
-    component: Layout,
-    redirect: '/backSetting/addManage',
-    name: 'backSetting',
-    meta: { title: '设置', icon: 'teacher' },
-    children: [
-      {
-        path: 'addManage',
-        name: 'addManage',
-        component: _import('backSetting/index'),
-        meta: { title: '设置', icon: 'teacher' }
+        meta: { title: '提币数据', icon: 'table' }
       }
     ]
   },

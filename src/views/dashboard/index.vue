@@ -1,6 +1,6 @@
 <template>
   <div class="dashboard-container">
-    <div class="dashboard-text">欢迎登录MVC控制中心</div>
+    <div class="dashboard-text">欢迎登录钱包控制中心</div>
   </div>
 </template>
 

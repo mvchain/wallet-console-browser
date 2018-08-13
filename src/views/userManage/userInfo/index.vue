@@ -1,19 +1,6 @@
 <template>
   <div class="user-info-con">
-    <el-table
-      :data="userInfo"
-      style="width: 100%">
-      <el-table-column
-        prop="tokenName"
-        label="币种"
-      >
-      </el-table-column>
-      <el-table-column
-        prop="balance"
-        label="余额"
-      >
-      </el-table-column>
-    </el-table>
+    提币数据
   </div>
 </template>
 
@@ -25,21 +12,12 @@
       return {
       }
     },
-    mounted() {
-      this.getUserInfo(this.$route.query.id)
-    },
     computed: {
       ...mapGetters({
         userInfo: 'userInfo'
       })
     },
     methods: {
-      getUserInfo(str) {
-        this.$store.dispatch('infoHandler', str).then(() => {
-        }).catch((err) => {
-          this.$message.error(err)
-        })
-      }
     }
   }
 </script>
