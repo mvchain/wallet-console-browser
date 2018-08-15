@@ -1,5 +1,5 @@
 <template>
-  <div class="user-info-con">
+  <div class="user-list">
     <el-row :gutter="20">
       <el-col :span="4">
         <el-button>汇总导出</el-button>
@@ -31,22 +31,22 @@
           >
           </el-date-picker>
         </template>
-        <el-date-picker
-          v-model="startWeek"
-          v-show="timeIndex === 2"
-          value-format="timestamp"
-          type="week"
-          format="yyyy 第 WW 周"
-        >
-        </el-date-picker>
-        <el-date-picker
-          v-model="endWeek"
-          v-show="timeIndex === 2"
-          type="week"
-          value-format="timestamp"
-          format="yyyy 第 WW 周"
-        >
-        </el-date-picker>
+          <el-date-picker
+            v-model="startWeek"
+            v-show="timeIndex === 2"
+            value-format="timestamp"
+            type="week"
+            format="yyyy 第 WW 周"
+          >
+          </el-date-picker>
+          <el-date-picker
+            v-model="endWeek"
+            v-show="timeIndex === 2"
+            type="week"
+            value-format="timestamp"
+            format="yyyy 第 WW 周"
+          >
+          </el-date-picker>
         <template>
           <el-date-picker
             v-model="startMonth"
@@ -99,7 +99,7 @@
 <script>
   import { mapGetters } from 'vuex'
   export default {
-    name: 'userInfo',
+    name: 'rechargeData',
     data() {
       return {
         rechargeTime: '',
@@ -148,7 +148,7 @@
     },
     computed: {
       ...mapGetters({
-        userInfo: 'userInfo'
+        addressCount: 'addressCount'
       })
     },
     methods: {
@@ -158,9 +158,8 @@
     }
   }
 </script>
-
 <style rel="stylesheet/scss" lang="scss" scoped>
-  .user-info-con{
+  .user-list{
     padding:30px;
   }
 

@@ -69,22 +69,22 @@ export const constantRouterMap = [
     ]
   },
   {
-    path: '/userManage',
+    path: '/dataStatistics',
     component: Layout,
-    redirect: '/userManage/basicInfo',
-    name: 'userManage',
+    redirect: '/DataStatistics/rechargeData',
+    name: 'dataStatistics',
     meta: { title: '数据统计', icon: 'table' },
     children: [
       {
-        path: 'basicInfo',
-        name: 'basicInfo',
-        component: _import('userManage/basicInfo/index'),
+        path: 'rechargeData',
+        name: 'rechargeData',
+        component: _import('DataStatistics/rechargeData/index'),
         meta: { title: '充值数据', icon: 'table' }
       },
       {
-        path: 'userInfo',
-        name: 'userInfo',
-        component: _import('userManage/userInfo/index'),
+        path: 'withdrawData',
+        name: 'withdrawData',
+        component: _import('DataStatistics/withdrawData/index'),
         meta: { title: '提币数据', icon: 'table' }
       }
     ]
