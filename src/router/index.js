@@ -33,7 +33,20 @@ export const constantRouterMap = [
       component: _import('dashboard/index')
     }]
   },
-
+  {
+    path: '/address',
+    component: Layout,
+    redirect: '/address',
+    meta: { title: '地址管理', icon: 'teacher' },
+    children: [
+      {
+        path: 'address',
+        name: 'address',
+        component: _import('addressManage/index'),
+        meta: { title: '地址管理', icon: 'teacher' }
+      }
+    ]
+  },
   {
     path: '/projectManage',
     component: Layout,

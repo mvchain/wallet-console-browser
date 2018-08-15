@@ -3,13 +3,17 @@ import { getToken, setToken, removeToken } from '@/utils/auth'
 
 const user = {
   state: {
-    token: getToken()
+    token: getToken(),
+    avatar: ''
   },
 
   mutations: {
     SET_TOKEN: (state, token) => {
       state.token = token
-    }
+    },
+    SET_AVATOAR: (state, avatar) => {
+      state.avatar = avatar
+    },
   },
 
   actions: {
@@ -20,6 +24,7 @@ const user = {
           window.sessionStorage.setItem('user', JSON.stringify({refreshToken: res.data.refreshToken, username: payload.username}))
           setToken(res.data.token)
           commit('SET_TOKEN', res.data.token)
+          commit('SET_AVATOAR', payload.username)
           resolve()
         }).catch(error => {
           reject(error)

@@ -34,25 +34,16 @@ export function parseTime(time, cFormat) {
   return time_str
 }
 
-export function formatTime(time, option) {
-  time = +time * 1000
-  const d = new Date(time)
-  const now = Date.now()
+export function formatTime(t) {
+  const d = new Date(t)
+  let month = '' + (d.getMonth() + 1)
+  let day = '' + d.getDate()
+  const year = d.getFullYear()
+  const hour = '' + d.getHours()
+  const min = '' + d.getMinutes()
+  const sec = '' + d.getSeconds()
 
-  const diff = (now - d) / 1000
-
-  if (diff < 30) {
-    return '刚刚'
-  } else if (diff < 3600) { // less 1 hour
-    return Math.ceil(diff / 60) + '分钟前'
-  } else if (diff < 3600 * 24) {
-    return Math.ceil(diff / 3600) + '小时前'
-  } else if (diff < 3600 * 24 * 2) {
-    return '1天前'
-  }
-  if (option) {
-    return parseTime(time, option)
-  } else {
-    return d.getMonth() + 1 + '月' + d.getDate() + '日' + d.getHours() + '时' + d.getMinutes() + '分'
-  }
+  if (month.length < 2) month = '0' + month
+  if (day.length < 2) day = '0' + day
+  return [year, month, day].join('/') + ' ' + [hour, min, sec].join(':')
 }

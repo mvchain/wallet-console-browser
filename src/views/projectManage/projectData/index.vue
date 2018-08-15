@@ -1,10 +1,25 @@
 <template>
   <div class="project-data">
     <el-row :gutter="20">
-      <el-col :span="6">
-        <el-button>导入</el-button>
-        <el-button>导出</el-button>
-        <el-button>一键同意</el-button>
+      <el-col :span="2">
+        <el-upload
+        class="upload-demo"
+        :action="action"
+        :headers="uploadHead"
+        :on-success="successFun"
+        :on-error="errorFun"
+        :show-file-list="false"
+        multiple
+        :limit="3"
+        >
+          <el-button >地址导入</el-button>
+        </el-upload>
+      </el-col>
+      <el-col :span="2">
+        <el-button @click="importSignFun">导出</el-button>
+      </el-col>
+      <el-col :span="2">
+        <el-button @click="clickAgree">一键同意</el-button>
       </el-col>
       <el-col :span="8">
         <el-date-picker
@@ -13,58 +28,61 @@
           align="right"
           unlink-panels
           range-separator="至"
+          :default-time="['00:00:00', '23:59:59']"
           start-placeholder="开始日期"
           end-placeholder="结束日期"
-          :picker-options="pickerOptions">
+          >
         </el-date-picker>
-        <el-button>表格导出</el-button>
+        <el-button @click="importFun">表格导出</el-button>
       </el-col>
 
       <el-col :span="6">
         <el-input v-model="searchTxt" placeholder="请输入单号、目标地址"></el-input>
       </el-col>
       <el-col :span="2">
-        <el-button>搜索</el-button>
+        <el-button @click="searchHandler">搜索</el-button>
       </el-col>
     </el-row>
     <div style="margin-top:30px;">
       <el-table
-        :data="tableData"
-        @selection-change="handleSelectionChange"
+        :data="recordList.list"
         border
         style="width: 100%">
         <el-table-column
-          type="selection"
-          :selectable="isSelected"
-          width="55">
-        </el-table-column>
-        <el-table-column
-          prop="number"
+          prop="transactionId"
           label="单号">
         </el-table-column>
         <el-table-column
-          prop="time"
+          prop="createdAt"
+          width="180"
           label="时间">
         </el-table-column>
         <el-table-column
-          prop="funds"
+          prop="value"
           label="充值金额">
         </el-table-column>
         <el-table-column
-          prop="address"
-          label="来源地址">
+          prop="toAddress"
+          width="550"
+          label="目标地址">
+        </el-table-column>
+        <el-table-column
+          prop="hash"
+          width="550"
+          label="交易哈希">
         </el-table-column>
         <el-table-column
           label="操作"
           width="100">
           <template slot-scope="scope">
-            <el-dropdown  @command="handleCommand">
-      <span class="el-dropdown-link">
-        待审核<i class="el-icon-arrow-down el-icon--right"></i>
-      </span>
-              <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item command="1">同意</el-dropdown-item>
-                <el-dropdown-item command="0">拒绝</el-dropdown-item>
+            <span v-show="scope.row.transactionStatus !== 1">{{scope.row.transactionStatus | statusFliter}}</span>
+            <el-dropdown  @command="handleCommand" v-show="scope.row.transactionStatus === 1">
+              <span class="el-dropdown-link">
+                待审核<i class="el-icon-arrow-down el-icon--right"></i>
+              </span>
+              <el-dropdown-menu slot="dropdown" >
+                <el-dropdown-item :command="{id:scope.row.id, status: 2}">同意</el-dropdown-item>
+                <el-dropdown-item :command="{id:scope.row.id, status: 3}">拒绝</el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
           </template>
@@ -72,8 +90,10 @@
       </el-table>
       <div style="margin-top:30px; text-align:center;">
         <el-pagination
+          @current-change="handleCurrentChange"
+          :page-size="10"
           layout="prev, pager, next"
-          :total="50">
+          :total="recordList.total">
         </el-pagination>
       </div>
     </div>
@@ -82,88 +102,116 @@
 
 <script>
   import { mapGetters } from 'vuex'
-
+  import { formatTime } from '@/utils'
+  import { getToken } from '@/utils/auth'
   export default {
     name: 'projectData',
     data() {
       return {
         searchTxt: '',
         rechargeTime: '',
-        pickerOptions: {
-          shortcuts: [{
-            text: '最近一周',
-            onClick(picker) {
-              const end = new Date()
-              const start = new Date()
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
-              picker.$emit('pick', [start, end])
-            }
-          }, {
-            text: '最近一个月',
-            onClick(picker) {
-              const end = new Date()
-              const start = new Date()
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
-              picker.$emit('pick', [start, end])
-            }
-          }, {
-            text: '最近三个月',
-            onClick(picker) {
-              const end = new Date()
-              const start = new Date()
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
-              picker.$emit('pick', [start, end])
-            }
-          }]
-        },
-        tableData: [
-          {
-            number: 'R123456789',
-            time: '2017/11/02/20:00',
-            funds: '30ETH',
-            address: '0x648662ac074c16f5a807c7c9a979cb2786576cae'
-          },
-          {
-            number: 'R123456789',
-            time: '2017/11/02/20:00',
-            funds: '30ETH',
-            address: '0x648662ac074c16f5a807c7c9a979cb2786576cae'
-          },
-          {
-            number: 'R123456789',
-            time: '2017/11/02/20:00',
-            funds: '30ETH',
-            address: '0x648662ac074c16f5a807c7c9a979cb2786576cae'
-          }
-        ],
-        multipleSelection: []
+        pageNum: 1,
+        pageSize: 10,
+        multipleSelection: [],
+        startTime: '',
+        stopTime: '',
+        action: window.urlData.url + '/dashbord/sign/import',
+        uploadHead: {
+          Authorization: getToken()
+        }
       }
     },
     mounted() {
+      this.getTableData(true)
     },
     computed: {
       ...mapGetters({
-        salesList: 'salesList'
+        recordList: 'recordList'
       })
     },
     methods: {
       handleCommand(c) {
-        console.log(c)
+        this.$store.dispatch('getReview', c).then(() => {
+          this.getTableData()
+        }).catch(() => {
+        })
       },
-      handleSelectionChange(val) {
-        this.multipleSelection = val
-        console.log(val)
+      handleCurrentChange(c) {
+        this.pageNum = c
+        this.getTableData()
       },
-      isSelected(r, index) {
-        if (index) {
-          return true
+      searchHandler() {
+        this.getTableData()
+      },
+      getTableData(opt) {
+        this.formatTime()
+        let t = ''
+        if (opt) {
+          t = '?oprType=withdraw&pageNum=1&pageSize=10'
+        } else {
+          if (this.searchTxt.trim().length >= 40) {
+            t = `?oprType=withdraw&pageNum=${this.pageNum}&pageSize=10&toAddress=${this.searchTxt}&startTime=${this.startTime}&stopTime=${this.stopTime}`
+          } else {
+            t = `?oprType=withdraw&pageNum=${this.pageNum}&pageSize=10&transactionId=${this.searchTxt}&startTime=${this.startTime}&stopTime=${this.stopTime}`
+          }
         }
-        return false
+        this.$store.dispatch('getRecordList', t)
+      },
+      formatTime() {
+        if (Array.isArray(this.rechargeTime)) {
+          this.startTime = formatTime(this.rechargeTime[0])
+          this.stopTime = formatTime(this.rechargeTime[1])
+        } else {
+          this.startTime = '2000/06/07 00:00:00'
+          this.stopTime = formatTime(new Date())
+        }
+      },
+      importFun() {
+        this.formatTime()
+        this.$store.dispatch('getSign').then((s) => {
+          window.open(`${window.urlData.url}/dashbord/transaction/export?oprType=withdraw&sign=${s}&startTime=${this.startTime}&stopTime=${this.stopTime}`)
+        }).catch(() => {
+        })
+      },
+      importSignFun() {
+        this.$store.dispatch('getSign').then((s) => {
+          window.open(`${window.urlData.url}/dashbord/sign/export?sign=${s}`)
+        }).catch(() => {
+        })
+      },
+      clickAgree() {
+        this.$confirm('是否同意所有提币?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$store.dispatch('getAgreeAll').then(() => {
+            this.getTableData()
+            this.$message({
+              type: 'success',
+              message: '操作成功!'
+            })
+          })
+        }).catch(() => {
+        })
+      },
+      successFun(s) {
+        if (s.code !== 200) {
+          this.$message.error(`导入失败${s.message}`)
+        } else {
+          this.$message.success('导入成功')
+        }
+      },
+      errorFun() {
+        this.$message.error('导入失败')
       }
     }
   }
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-  @import './index';
+  .project-data{
+    padding:30px;
+  }
+
 </style>

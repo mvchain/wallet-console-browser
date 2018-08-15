@@ -19,18 +19,6 @@
                   placeholder="password"></el-input>
         <span class="show-pwd" @click="showPwd"><svg-icon icon-class="eye"/></span>
       </el-form-item>
-      <el-form-item prop="valiCode">
-        <el-row class="verification-con">
-          <el-col :span="18" class="verification-e">
-            <el-input v-model="loginForm.imageCode"></el-input>
-          </el-col>
-          <el-col :span="6" class="verification-s">
-            <span @click="changeVerification">
-              <img :src="verificationImg" alt="">
-            </span>
-          </el-col>
-        </el-row>
-      </el-form-item>
       <el-form-item>
         <el-button type="primary" style="width:100%;" v-loading="loading" @click="handleLogin">
           登 录
@@ -41,13 +29,10 @@
 </template>
 
 <script>
-  import md5 from 'blueimp-md5'
+  // import md5 from 'blueimp-md5'
 
   export default {
     name: 'login',
-    mounted() {
-      this.createCode()
-    },
     data() {
       const validateUsername = (rule, value, callback) => {
         if (!value) {
@@ -66,8 +51,7 @@
       return {
         loginForm: {
           username: '',
-          password: '',
-          imageCode: ''
+          password: ''
         },
         loginRules: {
           username: [{ required: true, trigger: 'blur', validator: validateUsername }],
@@ -79,9 +63,6 @@
       }
     },
     methods: {
-      createCode() {
-        this.verificationImg = window.urlData.url + '/admin/validate/image?t=' + Date.parse(new Date())
-      },
       showPwd() {
         if (this.pwdType === 'password') {
           this.pwdType = ''
@@ -89,18 +70,15 @@
           this.pwdType = 'password'
         }
       },
-      changeVerification() {
-        this.createCode()
-      },
       handleLogin() {
         this.$refs.loginForm.validate(valid => {
           if (valid) {
             this.loading = true
-            let copyForm = JSON.stringify(this.loginForm)
-            copyForm = JSON.parse(copyForm)
-            copyForm.password = md5(md5(copyForm.password) + 'MVC')
+            // let copyForm = JSON.stringify(this.loginForm)
+            // copyForm = JSON.parse(copyForm)
+            // copyForm.password = md5(md5(copyForm.password) + 'MVC')
 
-            this.$store.dispatch('Login', copyForm).then(() => {
+            this.$store.dispatch('Login', this.loginForm).then(() => {
               this.loading = false
               this.$router.push({ path: '/' })
             }).catch(() => {

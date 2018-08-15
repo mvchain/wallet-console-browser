@@ -1,24 +1,72 @@
 <template>
   <div class="user-list">
     <el-row :gutter="20">
-      <el-col :span="6">
+      <el-col :span="4">
         <el-button>汇总导出</el-button>
         <el-button>汇总导入</el-button>
       </el-col>
-      <el-col :span="8">
-        <el-date-picker
-          v-model="rechargeTime"
-          type="daterange"
-          align="right"
-          unlink-panels
-          range-separator="至"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
-          :picker-options="pickerOptions">
-        </el-date-picker>
-        <el-button>表格导出</el-button>
+      <el-col :span="3">
+        <el-select v-model="timeIndex" placeholder="请选择">
+          <el-option
+            v-for="(v, k) in timeChange"
+            :key="k"
+            @change="timeFun"
+            :label="v.name"
+            :value="v.id">
+          </el-option>
+        </el-select>
       </el-col>
+      <el-col :span="14">
+        <template>
+          <el-date-picker
+            v-model="rechargeTime"
+            v-show="timeIndex === 1"
+            type="daterange"
+            align="right"
+            unlink-panels
+            range-separator="至"
+            value-format="timestamp"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+          >
+          </el-date-picker>
+        </template>
+          <el-date-picker
+            v-model="startWeek"
+            v-show="timeIndex === 2"
+            value-format="timestamp"
+            type="week"
+            format="yyyy 第 WW 周"
+          >
+          </el-date-picker>
+          <el-date-picker
+            v-model="endWeek"
+            v-show="timeIndex === 2"
+            type="week"
+            value-format="timestamp"
+            format="yyyy 第 WW 周"
+          >
+          </el-date-picker>
+        <template>
+          <el-date-picker
+            v-model="startMonth"
+            v-show="timeIndex === 3"
+            value-format="timestamp"
+            type="month"
+          >
+          </el-date-picker>
+          <el-date-picker
+            v-model="endMonth"
+            v-show="timeIndex === 3"
+            value-format="timestamp"
+            type="month"
+          >
+          </el-date-picker>
+        </template>
 
+        <el-button >导出表格</el-button>
+      </el-col>
+      <el-col :span="3" style="text-align: right">中心钱包余额：2000ETH</el-col>
     </el-row>
     <div style="margin-top:30px;">
       <el-table
@@ -55,33 +103,6 @@
     data() {
       return {
         rechargeTime: '',
-        pickerOptions: {
-          shortcuts: [{
-            text: '日数据',
-            onClick(picker) {
-              const end = new Date()
-              const start = new Date()
-              start.setTime(start.getTime() - 3600 * 1000 * 24)
-              picker.$emit('pick', [start, end])
-            }
-          }, {
-            text: '周数据',
-            onClick(picker) {
-              const end = new Date()
-              const start = new Date()
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
-              picker.$emit('pick', [start, end])
-            }
-          }, {
-            text: '月数据',
-            onClick(picker) {
-              const end = new Date()
-              const start = new Date()
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
-              picker.$emit('pick', [start, end])
-            }
-          }]
-        },
         tableData: [
           {
             time: '2017/11/02/20:00',
@@ -98,7 +119,31 @@
             funds: '30ETH',
             count: '3'
           }
-        ]
+        ],
+        timeChange: [
+          {
+            name: '日数据',
+            id: 1
+          },
+          {
+            name: '周数据',
+            id: 2
+          },
+          {
+            name: '月数据',
+            id: 3
+          }
+        ],
+        timeIndex: 1,
+        startWeek: '',
+        endWeek: '',
+        startMonth: '',
+        endMonth: ''
+      }
+    },
+    watch: {
+      'timeIndex': function(v, o) {
+        console.log(v)
       }
     },
     computed: {
@@ -107,9 +152,15 @@
       })
     },
     methods: {
+      timeFun() {
+        console.log(this.timeIndex)
+      }
     }
   }
 </script>
 <style rel="stylesheet/scss" lang="scss" scoped>
-  @import './index';
+  .user-list{
+    padding:30px;
+  }
+
 </style>
