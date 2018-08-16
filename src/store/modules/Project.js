@@ -1,11 +1,13 @@
-import { ossObjHandler, addrCount, addrTable, RWRecord, importSign, review, agreeAll } from '@/api/Home'
+import { ossObjHandler, addrCount, addrTable, RWRecord, importSign, review, agreeAll, RWDataStatistics, assets } from '@/api/Home'
 
 const Project = {
   state: {
     ossObj: {},
     addressCount: {},
     addressTable: {},
-    recordList: {}
+    recordList: {},
+    dataList: {},
+    assetsData: {}
   },
   mutations: {
     SET_OSSOBJ: (state, ossObj) => {
@@ -19,6 +21,12 @@ const Project = {
     },
     SET_RECORD_LIST: (state, data) => {
       state.recordList = data
+    },
+    SET_DATA_LIST: (state, data) => {
+      state.dataList = data
+    },
+    SET_ASSETS_DATA: (state, data) => {
+      state.assetsData = data
     }
   },
   actions: {
@@ -83,6 +91,26 @@ const Project = {
     getAgreeAll: ({ commit, state }, payload) => {
       return new Promise((resolve, reject) => {
         agreeAll().then(res => {
+          resolve()
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+    getRWData: ({ commit, state }, payload) => {
+      return new Promise((resolve, reject) => {
+        RWDataStatistics(payload).then(res => {
+          commit('SET_DATA_LIST', res.data)
+          resolve()
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+    getAssets: ({ commit, state }, payload) => {
+      return new Promise((resolve, reject) => {
+        assets(payload).then(res => {
+          commit('SET_ASSETS_DATA', res.data)
           resolve()
         }).catch(error => {
           reject(error)

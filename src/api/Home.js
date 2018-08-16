@@ -52,3 +52,17 @@ export function agreeAll(data) {
     method: 'put'
   })
 }
+// 充提数据统计
+export function RWDataStatistics(data) {
+  return request({
+    url: `/dashbord/transaction/count${data}`,
+    method: 'get'
+  })
+}
+// 获取资产统计
+export function assets(data) {
+  return request({
+    url: `/dashbord/balance${data}`,
+    method: 'get'
+  })
+}
