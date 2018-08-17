@@ -177,10 +177,11 @@
       },
       exportTable() {
         this.formatTime()
+        console.log(this.dateType)
         switch (this.dateType) {
           case 0:
             this.$store.dispatch('getSign').then((s) => {
-              window.open(`${window.urlData.url}/dashbord/transaction/count/export?startTime=${this.startTime}&stopTime=${this.stopTime}&dateType=${this.dateType}&oprType=recharge`)
+              window.open(`${window.urlData.url}/dashbord/transaction/count/export?startTime=${this.startTime}&stopTime=${this.stopTime}&dateType=${this.dateType}&oprType=recharge&sign${s}`)
             }).catch(() => {
             })
             break
