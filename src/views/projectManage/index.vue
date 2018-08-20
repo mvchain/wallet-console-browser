@@ -43,9 +43,11 @@
           label="来源地址">
         </el-table-column>
         <el-table-column
-          prop="hash"
-          width="600"
+          width="650"
           label="交易哈希">
+          <template slot-scope="scope">
+            <a target="_blank" :href="`https://etherscan.io/tx/${scope.row.hash}`">{{scope.row.hash}}</a>
+          </template>
         </el-table-column>
       </el-table>
       <div style="margin-top:30px; text-align:center;">
@@ -107,11 +109,11 @@
       },
       formatTime() {
         if (Array.isArray(this.rechargeTime)) {
-          this.startTime = formatTime(this.rechargeTime[0])
-          this.stopTime = formatTime(this.rechargeTime[1])
+          this.startTime = formatTime(this.rechargeTime[0], false, 'd')
+          this.stopTime = formatTime(this.rechargeTime[1], true, 'd')
         } else {
           this.startTime = '2000/06/07 00:00:00'
-          this.stopTime = formatTime(new Date())
+          this.stopTime = formatTime(new Date(), false, 'd')
         }
       },
       importFun() {

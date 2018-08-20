@@ -34,8 +34,23 @@ export function parseTime(time, cFormat) {
   return time_str
 }
 
-export function formatTime(t) {
-  const d = new Date(t)
+export function formatTime(d, f, s) {
+  let seconds = 0
+  switch (s) {
+    case 'd':
+      seconds = 86399600
+      break
+    case 'w':
+      seconds = 86399600 * 7
+      break
+    case 'm':
+      seconds = 86399600 * 30
+      break
+  }
+  if (f) {
+    d = new Date(Date.parse(d) + seconds)
+  }
+  // const d = new Date(t)
   let month = '' + (d.getMonth() + 1)
   let day = '' + d.getDate()
   const year = d.getFullYear()
@@ -47,3 +62,4 @@ export function formatTime(t) {
   if (day.length < 2) day = '0' + day
   return [year, month, day].join('/') + ' ' + [hour, min, sec].join(':')
 }
+
