@@ -20,11 +20,10 @@
       <el-col :span="10">
         <el-button style="color:#5a5e66;cursor:default;" type="text">已分配地址数量：{{addressCount.use}}</el-button>
       </el-col>
-      <el-col :span="6">
-        <el-input v-model="searchTxt" placeholder="请输入地址"></el-input>
-      </el-col>
-      <el-col :span="2" style="text-align: right">
-        <el-button @click="searchHandler">搜索</el-button>
+      <el-col :span="8">
+        <el-input v-model="searchTxt" placeholder="请输入地址">
+          <el-button @click="searchHandler" slot="append">搜索</el-button>
+        </el-input>
       </el-col>
     </el-row>
     <div style="margin-top:30px;">

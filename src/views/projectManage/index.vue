@@ -16,11 +16,10 @@
         <el-button @click="importFun">表格导出</el-button>
       </el-col>
 
-      <el-col :span="8">
-        <el-input v-model="searchTxt" placeholder="请输入交易hash、来源地址"></el-input>
-      </el-col>
-      <el-col :span="2" style="text-align: right">
-        <el-button @click="searchHandler">搜索</el-button>
+      <el-col :span="10">
+        <el-input v-model="searchTxt" placeholder="请输入交易hash、来源地址">
+          <el-button @click="searchHandler" slot="append">搜索</el-button>
+        </el-input>
       </el-col>
     </el-row>
     <div style="margin-top:30px;">
