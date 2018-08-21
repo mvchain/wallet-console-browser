@@ -1,7 +1,7 @@
 <template>
   <div class="project-manage">
     <el-row :gutter="20">
-      <el-col :span="12">
+      <el-col :span="14">
         <el-date-picker
         v-model="rechargeTime"
         type="daterange"
@@ -19,7 +19,7 @@
       <el-col :span="8">
         <el-input v-model="searchTxt" placeholder="请输入交易hash、来源地址"></el-input>
       </el-col>
-      <el-col :span="4">
+      <el-col :span="2" style="text-align: right">
         <el-button @click="searchHandler">搜索</el-button>
       </el-col>
     </el-row>

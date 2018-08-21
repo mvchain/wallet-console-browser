@@ -17,13 +17,13 @@
       <el-col :span="3">
         <el-button style="color:#5a5e66;cursor:default;" type="text">待分配地址数量：{{addressCount.surplus}}</el-button>
       </el-col>
-      <el-col :span="3">
+      <el-col :span="10">
         <el-button style="color:#5a5e66;cursor:default;" type="text">已分配地址数量：{{addressCount.use}}</el-button>
       </el-col>
       <el-col :span="6">
         <el-input v-model="searchTxt" placeholder="请输入地址"></el-input>
       </el-col>
-      <el-col :span="2">
+      <el-col :span="2" style="text-align: right">
         <el-button @click="searchHandler">搜索</el-button>
       </el-col>
     </el-row>
@@ -80,7 +80,7 @@
     },
     mounted() {
       this.$store.dispatch('getAddrCount')
-      this.getTableData(`?pageNum=${this.pageNum}&pageSize=${this.pageSize}`)
+      // this.getTableData(`?pageNum=${this.pageNum}&pageSize=${this.pageSize}`)
     },
     methods: {
       getTableData(txt) {

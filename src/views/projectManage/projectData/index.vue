@@ -16,9 +16,9 @@
         </el-upload>
       </el-col>
       <el-col :span="2">
-        <el-button @click="importSignFun">导出</el-button>
+        <el-button @click="importSignFun">地址导出</el-button>
       </el-col>
-      <el-col :span="2">
+      <el-col :span="4">
         <el-button @click="clickAgree">一键同意</el-button>
       </el-col>
       <el-col :span="8">
@@ -39,7 +39,7 @@
       <el-col :span="6">
         <el-input v-model="searchTxt" placeholder="请输入单号、目标地址"></el-input>
       </el-col>
-      <el-col :span="2">
+      <el-col :span="2" style="text-align: right">
         <el-button @click="searchHandler">搜索</el-button>
       </el-col>
     </el-row>

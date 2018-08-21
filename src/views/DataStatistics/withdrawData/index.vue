@@ -66,7 +66,7 @@
 
         <el-button @click="exportTable">导出表格</el-button>
       </el-col>
-      <el-col :span="3" style="text-align: right">中心钱包余额：{{assetsData}}ETH</el-col>
+      <el-col :span="7" style="text-align: right">中心钱包余额：{{assetsData}}ETH</el-col>
     </el-row>
     <div style="margin-top:30px;">
       <el-table

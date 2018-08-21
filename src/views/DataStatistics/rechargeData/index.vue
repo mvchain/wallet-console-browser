@@ -4,7 +4,7 @@
       <el-col :span="2">
         <el-button @click="summaryExport">汇总导出</el-button>
       </el-col>
-      <el-col :span="2">
+      <el-col :span="5">
         <el-upload
           class="upload-demo"
           :action="action"
@@ -28,7 +28,7 @@
           </el-option>
         </el-select>
       </el-col>
-      <el-col :span="14">
+      <el-col :span="11">
         <template>
           <el-date-picker
             v-model="rechargeTime"
