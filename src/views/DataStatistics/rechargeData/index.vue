@@ -28,7 +28,7 @@
           </el-option>
         </el-select>
       </el-col>
-      <el-col :span="11">
+      <el-col :span="10">
         <template>
           <el-date-picker
             v-model="rechargeTime"

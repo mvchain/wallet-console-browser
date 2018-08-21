@@ -38,7 +38,7 @@
 
       <el-col :span="8">
         <el-input  v-model="searchTxt" placeholder="请输入单号、目标地址">
-          <el-button  @click="searchHandler" slot="append" >搜索</el-button>
+          <el-button  @click="searchHandler" &pageSize=20 >搜索</el-button>
         </el-input>
       </el-col>
 
@@ -93,7 +93,7 @@
       <div style="margin-top:30px; text-align:center;">
         <el-pagination
           @current-change="handleCurrentChange"
-          :page-size="10"
+          :page-size="20"
           layout="prev, pager, next"
           :total="recordList.total">
         </el-pagination>
@@ -149,12 +149,12 @@
         this.formatTime()
         let t = ''
         if (opt) {
-          t = '?oprType=withdraw&pageNum=1&pageSize=10'
+          t = '?oprType=withdraw&pageNum=1&pageSize=20'
         } else {
           if (this.searchTxt.trim().length >= 40) {
-            t = `?oprType=withdraw&pageNum=${this.pageNum}&pageSize=10&toAddress=${this.searchTxt}&startTime=${this.startTime}&stopTime=${this.stopTime}`
+            t = `?oprType=withdraw&pageNum=${this.pageNum}&toAddress=${this.searchTxt}&startTime=${this.startTime}&stopTime=${this.stopTime}&pageSize=20`
           } else {
-            t = `?oprType=withdraw&pageNum=${this.pageNum}&pageSize=10&transactionId=${this.searchTxt}&startTime=${this.startTime}&stopTime=${this.stopTime}`
+            t = `?oprType=withdraw&pageNum=${this.pageNum}&transactionId=${this.searchTxt}&startTime=${this.startTime}&stopTime=${this.stopTime}&pageSize=20`
           }
         }
         this.$store.dispatch('getRecordList', t)

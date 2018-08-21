@@ -52,7 +52,7 @@
       <div style="margin-top:30px; text-align:center;">
         <el-pagination
           @current-change="handleCurrentChange"
-          :page-size="10"
+          :page-size="20"
           layout="prev, pager, next"
           :total="recordList.total">
         </el-pagination>
@@ -89,12 +89,12 @@
         this.formatTime()
         let t = ''
         if (opt) {
-          t = '?oprType=recharge&pageNum=1&pageSize=10'
+          t = '?oprType=recharge&pageNum=1&pageSize=20'
         } else {
           if (this.searchTxt.trim().length >= 64) {
-            t = `?oprType=recharge&pageNum=${this.pageNum}&pageSize=10&hash=${this.searchTxt}&startTime=${this.startTime}&stopTime=${this.stopTime}`
+            t = `?oprType=recharge&pageNum=${this.pageNum}&hash=${this.searchTxt}&startTime=${this.startTime}&stopTime=${this.stopTime}&pageSize=20`
           } else {
-            t = `?oprType=recharge&pageNum=${this.pageNum}&pageSize=10&fromAddress=${this.searchTxt}&startTime=${this.startTime}&stopTime=${this.stopTime}`
+            t = `?oprType=recharge&pageNum=${this.pageNum}&fromAddress=${this.searchTxt}&startTime=${this.startTime}&stopTime=${this.stopTime}&pageSize=20`
           }
         }
         this.$store.dispatch('getRecordList', t)
