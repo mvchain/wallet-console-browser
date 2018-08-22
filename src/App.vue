@@ -17,6 +17,9 @@
           store.dispatch('getReferToken')
         }
       }
+    },
+    destroyed() {
+      window.sessionStorage.clear()
     }
   }
 </script>

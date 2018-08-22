@@ -62,6 +62,7 @@
     data() {
       return {
         searchTxt: '',
+        durationTime: 3,
         uploadHead: {
           Authorization: getToken()
         },
@@ -96,7 +97,16 @@
         if (s.code !== 200) {
           this.$message.error(`上传失败${s.message}`)
         } else {
-          this.$message.success('上传成功')
+          window.setInterval(() => {
+            this.durationTime--
+            if (this.durationTime === -1) {
+              this.$router.go(0)
+            }
+          }, 1000)
+          this.$message.success({
+            message: '上传成功,3秒后刷新页面',
+            duration: 3000
+          })
         }
       },
       errorFun() {

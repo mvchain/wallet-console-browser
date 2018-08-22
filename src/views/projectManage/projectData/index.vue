@@ -112,6 +112,7 @@
       return {
         searchTxt: '',
         rechargeTime: '',
+        durationTime: 3,
         pageNum: 1,
         pageSize: 10,
         multipleSelection: [],
@@ -149,12 +150,12 @@
         this.formatTime()
         let t = ''
         if (opt) {
-          t = '?oprType=withdraw&pageNum=1&pageSize=20'
+          t = '?oprType=withdraw&pageNum=1&pageSize=20&orderBy=created_at desc'
         } else {
           if (this.searchTxt.trim().length >= 40) {
-            t = `?oprType=withdraw&pageNum=${this.pageNum}&toAddress=${this.searchTxt}&startTime=${this.startTime}&stopTime=${this.stopTime}&pageSize=20`
+            t = `?oprType=withdraw&pageNum=${this.pageNum}&toAddress=${this.searchTxt}&startTime=${this.startTime}&stopTime=${this.stopTime}&pageSize=20&orderBy=created_at desc`
           } else {
-            t = `?oprType=withdraw&pageNum=${this.pageNum}&transactionId=${this.searchTxt}&startTime=${this.startTime}&stopTime=${this.stopTime}&pageSize=20`
+            t = `?oprType=withdraw&pageNum=${this.pageNum}&transactionId=${this.searchTxt}&startTime=${this.startTime}&stopTime=${this.stopTime}&pageSize=20&orderBy=created_at desc`
           }
         }
         this.$store.dispatch('getRecordList', t)
@@ -201,7 +202,16 @@
         if (s.code !== 200) {
           this.$message.error(`导入失败${s.message}`)
         } else {
-          this.$message.success('导入成功')
+          window.setInterval(() => {
+            this.durationTime--
+            if (this.durationTime === -1) {
+              this.$router.go(0)
+            }
+          }, 1000)
+          this.$message.success({
+            message: '上传成功,3秒后刷新页面',
+            duration: 3000
+          })
         }
       },
       errorFun() {

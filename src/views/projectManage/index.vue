@@ -89,12 +89,12 @@
         this.formatTime()
         let t = ''
         if (opt) {
-          t = '?oprType=recharge&pageNum=1&pageSize=20'
+          t = '?oprType=recharge&pageNum=1&pageSize=20&orderBy=created_at desc'
         } else {
           if (this.searchTxt.trim().length >= 64) {
-            t = `?oprType=recharge&pageNum=${this.pageNum}&hash=${this.searchTxt}&startTime=${this.startTime}&stopTime=${this.stopTime}&pageSize=20`
+            t = `?oprType=recharge&pageNum=${this.pageNum}&hash=${this.searchTxt}&startTime=${this.startTime}&stopTime=${this.stopTime}&pageSize=20&orderBy=created_at desc`
           } else {
-            t = `?oprType=recharge&pageNum=${this.pageNum}&fromAddress=${this.searchTxt}&startTime=${this.startTime}&stopTime=${this.stopTime}&pageSize=20`
+            t = `?oprType=recharge&pageNum=${this.pageNum}&fromAddress=${this.searchTxt}&startTime=${this.startTime}&stopTime=${this.stopTime}&pageSize=20&orderBy=created_at desc`
           }
         }
         this.$store.dispatch('getRecordList', t)

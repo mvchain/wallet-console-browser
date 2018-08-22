@@ -122,6 +122,7 @@
         rechargeTime: [],
         rangeWeek: [],
         rangeMonth: [],
+        durationTime: 3,
         timeChange: [
           {
             name: '日数据',
@@ -197,7 +198,16 @@
         if (s.code !== 200) {
           this.$message.error(`导入失败${s.message}`)
         } else {
-          this.$message.success('导入成功')
+          window.setInterval(() => {
+            this.durationTime--
+            if (this.durationTime === -1) {
+              this.$router.go(0)
+            }
+          }, 1000)
+          this.$message.success({
+            message: '上传成功,3秒后刷新页面',
+            duration: 3000
+          })
         }
       },
       errorFun() {
