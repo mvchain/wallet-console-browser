@@ -19,6 +19,15 @@
       </el-col>
       <el-col :span="10">
         <el-button style="color:#5a5e66;cursor:default;" type="text">已分配地址数量：{{addressCount.use}}</el-button>
+        <el-select style="float:right; margin-left:20px;" v-model="isUsed" placeholder="请选择">
+          <el-option
+            v-for="(v, k) in options"
+            :key="k"
+            :label="v.name"
+            :value="v.id">
+          </el-option>
+        </el-select>
+        <el-button @click="exportTable" style="float:right;">导出数据</el-button>
       </el-col>
       <el-col :span="8">
         <el-input v-model="searchTxt" placeholder="请输入地址">
@@ -63,12 +72,27 @@
       return {
         searchTxt: '',
         durationTime: 3,
+        isUsed: '',
+        options: [
+          {
+            name: '所有',
+            id: ''
+          },
+          {
+            name: '已分配',
+            id: '1'
+          },
+          {
+            name: '未分配',
+            id: '0'
+          }
+        ],
         uploadHead: {
           Authorization: getToken()
         },
         pageNum: '1',
         fileList: [],
-        pageSize: 10,
+        pageSize: 20,
         action: window.urlData.url + '/dashbord/account/import'
       }
     },
@@ -80,18 +104,24 @@
     },
     mounted() {
       this.$store.dispatch('getAddrCount')
-      // this.getTableData(`?pageNum=${this.pageNum}&pageSize=${this.pageSize}`)
+      this.getTableData(`?pageNum=${this.pageNum}&pageSize=${this.pageSize}`)
     },
     methods: {
+      exportTable() {
+        this.$store.dispatch('getSign').then((s) => {
+          window.open(`${window.urlData.url}/dashbord/account/export?address=${this.searchTxt}&sign=${s}&isUsed=${this.isUsed}`)
+        }).catch(() => {
+        })
+      },
       getTableData(txt) {
         this.$store.dispatch('getAddrTable', txt)
       },
       handleCurrentChange(t) {
         this.pageNum = t
-        this.getTableData(`?pageNum=${t}&pageSize=${this.pageSize}&address=${this.searchTxt}`)
+        this.getTableData(`?pageNum=${t}&pageSize=${this.pageSize}&address=${this.searchTxt}&isUsed=${this.isUsed}`)
       },
       searchHandler() {
-        this.getTableData(`?pageNum=${this.pageNum}&pageSize=${this.pageSize}&address=${this.searchTxt}`)
+        this.getTableData(`?pageNum=${this.pageNum}&pageSize=${this.pageSize}&address=${this.searchTxt}&isUsed=${this.isUsed}`)
       },
       successFun(s) {
         if (s.code !== 200) {
