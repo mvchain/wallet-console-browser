@@ -12,11 +12,11 @@
         multiple
         :limit="3"
         >
-          <el-button >地址导入</el-button>
+          <el-button >导入</el-button>
         </el-upload>
       </el-col>
       <el-col :span="2">
-        <el-button @click="importSignFun">地址导出</el-button>
+        <el-button @click="importSignFun">导出</el-button>
       </el-col>
       <el-col :span="4">
         <el-button @click="clickAgree">一键同意</el-button>
