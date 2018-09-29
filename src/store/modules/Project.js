@@ -1,4 +1,4 @@
-import { ossObjHandler, addrCount, addrTable, RWRecord, importSign, review, agreeAll, RWDataStatistics, assets } from '@/api/Home'
+import { ossObjHandler, addrCount, addrTable, RWRecord, importSign, review, agreeAll, RWDataStatistics, assets, withdraw } from '@/api/Home'
 
 const Project = {
   state: {
@@ -111,6 +111,15 @@ const Project = {
       return new Promise((resolve, reject) => {
         assets(payload).then(res => {
           commit('SET_ASSETS_DATA', res.data)
+          resolve()
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+    postWithdraw: ({ commit, state }, payload) => {
+      return new Promise((resolve, reject) => {
+        withdraw(payload).then(res => {
           resolve()
         }).catch(error => {
           reject(error)

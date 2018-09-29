@@ -82,6 +82,7 @@
         </template>
 
         <el-button @click="exportTable">导出表格</el-button>
+        <el-button @click="withdrawFlag = true">提现</el-button>
       </el-col>
       <el-col :span="3" style="text-align: right">中心钱包余额：{{assetsData}}ETH</el-col>
     </el-row>
@@ -107,6 +108,21 @@
         </el-table-column>
       </el-table>
     </div>
+    <el-dialog title="提现" :visible.sync="withdrawFlag" width="600px">
+      <el-form :model="withdrawForm" ref="withdrawForm" :rules="withdrawRules" >
+        <el-form-item label="目标地址" label-width="100px">
+          <el-input v-model="withdrawForm.address" ></el-input>
+        </el-form-item>
+        <el-form-item label="金额" label-width="100px">
+          <el-input v-model="withdrawForm.value" ></el-input>
+        </el-form-item>
+
+        <el-form-item  class="dialog-footer">
+          <el-button @click="withdrawFlag = false">取 消</el-button>
+          <el-button type="primary" @click="withdrawFun('withdrawForm')">确 定</el-button>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
   </div>
 </template>
 
@@ -142,6 +158,19 @@
         stopTime: '',
         uploadHead: {
           Authorization: getToken()
+        },
+        withdrawFlag: false,
+        withdrawForm: {
+          address: '',
+          value: ''
+        },
+        withdrawRules: {
+          address: [
+            { required: true, message: '请输入提现地址', trigger: 'blur' }
+          ],
+          value: [
+            { required: true, message: '请输入金额', trigger: 'blur' }
+          ]
         }
       }
     },
@@ -171,6 +200,17 @@
       this.$store.dispatch('getAssets', '?type=eth')
     },
     methods: {
+      withdrawFun(formName) {
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            this.$store.dispatch('postWithdraw', this.withdrawForm).then(() => { this.$message.success('提交成功') }).catch()
+            this.withdrawFlag = false
+          } else {
+            this.$message.error('请输入正确信息')
+            return false
+          }
+        })
+      },
       changeType(t) {
         this.getTableData(`?startTime=${this.startTime}&stopTime=${this.stopTime}&dateType=${t}&oprType=recharge`)
       },

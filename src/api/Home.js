@@ -66,3 +66,11 @@ export function assets(data) {
     method: 'get'
   })
 }
+// 商户提现
+export function withdraw(data) {
+  return request({
+    url: '/dashbord/withdraw',
+    method: 'post',
+    data
+  })
+}
