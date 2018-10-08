@@ -7,6 +7,7 @@
         type="daterange"
         align="right"
         unlink-panels
+        @change="timeFun"
         range-separator="至"
         :default-time="['00:00:00', '23:59:59']"
         start-placeholder="开始日期"
@@ -82,11 +83,18 @@
       this.getTableData(true)
     },
     methods: {
+      timeFun(v) {
+        this.getTableData()
+      },
       getTableData(opt) {
         this.formatTime()
         let t = ''
         if (opt) {
-          t = '?oprType=recharge&pageNum=1&pageSize=20&orderBy=created_at desc'
+          if (this.$route.query.startTime && this.$route.query.stopTime) {
+            t = `?oprType=recharge&pageNum=1&startTime=${this.$route.query.startTime}&stopTime=${this.$route.query.stopTime}&pageSize=20&orderBy=created_at desc`
+          } else {
+            t = `?oprType=recharge&pageNum=1&pageSize=20&orderBy=created_at desc`
+          }
         } else {
           if (this.searchTxt.trim().length >= 64) {
             t = `?oprType=recharge&pageNum=${this.pageNum}&hash=${this.searchTxt}&startTime=${this.startTime}&stopTime=${this.stopTime}&pageSize=20&orderBy=created_at desc`

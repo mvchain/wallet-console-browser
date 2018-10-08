@@ -26,6 +26,7 @@
           v-model="rechargeTime"
           type="daterange"
           align="right"
+          @change="timeFun"
           unlink-panels
           range-separator="至"
           :default-time="['00:00:00', '23:59:59']"
@@ -38,7 +39,7 @@
 
       <el-col :span="8">
         <el-input  v-model="searchTxt" placeholder="请输入单号、目标地址">
-          <el-button  @click="searchHandler" &pageSize=20 >搜索</el-button>
+          <el-button slot="append"  @click="searchHandler" >搜索</el-button>
         </el-input>
       </el-col>
 
@@ -130,6 +131,9 @@
       })
     },
     methods: {
+      timeFun(v) {
+        this.getTableData()
+      },
       handleCommand(c) {
         this.$store.dispatch('getReview', c).then(() => {
           this.getTableData()

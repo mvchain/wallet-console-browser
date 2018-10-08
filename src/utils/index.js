@@ -44,7 +44,10 @@ export function formatTime(d, f, s) {
       seconds = 86399600 * 7
       break
     case 'm':
-      seconds = 86399600 * 30
+      var mm = parseInt(d.getMonth() + 1, 10)
+      var yy = d.getFullYear()
+      var temp = new Date(yy, mm, 0)
+      seconds = 86399600 * temp.getDate()
       break
   }
   if (f) {
