@@ -32,17 +32,14 @@
           label="时间">
         </el-table-column>
         <el-table-column
-
           prop="value"
           label="充值金额">
         </el-table-column>
         <el-table-column
           prop="fromAddress"
-          width="550"
           label="来源地址">
         </el-table-column>
         <el-table-column
-          width="650"
           label="交易哈希">
           <template slot-scope="scope">
             <a target="_blank" :href="`https://etherscan.io/tx/${scope.row.hash}`">{{scope.row.hash}}</a>
