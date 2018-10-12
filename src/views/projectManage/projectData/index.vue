@@ -151,7 +151,11 @@
         this.formatTime()
         let t = ''
         if (opt) {
-          t = '?oprType=withdraw&pageNum=1&pageSize=20&orderBy=created_at desc'
+          if (this.$route.query.startTime && this.$route.query.stopTime) {
+            t = `?oprType=withdraw&pageNum=1&startTime=${this.$route.query.startTime}&stopTime=${this.$route.query.stopTime}&pageSize=20&orderBy=created_at desc`
+          } else {
+            t = `?oprType=withdraw&pageNum=1&pageSize=20&orderBy=created_at desc`
+          }
         } else {
           if (this.searchTxt.trim().length >= 40) {
             t = `?oprType=withdraw&pageNum=${this.pageNum}&toAddress=${this.searchTxt}&startTime=${this.startTime}&stopTime=${this.stopTime}&pageSize=20&orderBy=created_at desc`

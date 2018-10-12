@@ -207,19 +207,16 @@
         if (r.dateStr.includes('至')) {
           startTime = r.dateStr.split('至')[0].replace(/-/ig, '/') + ' 0:0:0'
           stopTime = r.dateStr.split('至')[1].replace(/-/ig, '/') + ' 23:59:59'
-          console.log(startTime, stopTime)
         } else {
           if (r.dateStr.length > 7) {
             startTime = r.dateStr.replace(/-/ig, '/') + ' 0:0:0'
             stopTime = r.dateStr.replace(/-/ig, '/') + ' 23:59:59'
-            console.log(startTime, stopTime)
           } else {
             const mm = new Date(r.date).getMonth() + 1
             const yy = new Date(r.date).getFullYear()
             const temp = new Date(yy, mm, 0)
             startTime = formatTime(new Date(r.date)).split(' ')[0] + ' 0:0:0'
             stopTime = formatTime(temp).replace(/0:0:0/ig, '') + '23:59:59'
-            console.log(startTime, stopTime)
           }
         }
         this.$router.push({ path: '/projectManage/projectIndex', query: { startTime, stopTime }})

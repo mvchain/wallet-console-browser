@@ -71,6 +71,7 @@
     <div style="margin-top:30px;">
       <el-table
         :data="dataList.list"
+        @row-click="rowClick"
         border
         style="width: 100%">
 
@@ -125,15 +126,15 @@
     watch: {
       'rechargeTime': function(v, o) {
         this.formatTime(this.rechargeTime, 'd')
-        this.getTableData(`?startTime=${this.startTime}&stopTime=${this.stopTime}&dateType=${this.dateType}&oprType=withdraw`)
+        this.getTableData(`?startTime=${this.startTime}&stopTime=${this.stopTime}&dateType=${this.dateType}&oprType=withdraw&orderBy=created_at desc`)
       },
       'rangeWeek': function() {
         this.formatTime(this.rangeWeek, 'w')
-        this.getTableData(`?startTime=${this.startTime}&stopTime=${this.stopTime}&dateType=${this.dateType}&oprType=withdraw`)
+        this.getTableData(`?startTime=${this.startTime}&stopTime=${this.stopTime}&dateType=${this.dateType}&oprType=withdraw&orderBy=created_at desc`)
       },
       'rangeMonth': function() {
         this.formatTime(this.rangeMonth, 'm')
-        this.getTableData(`?startTime=${this.startTime}&stopTime=${this.stopTime}&dateType=${this.dateType}&oprType=withdraw`)
+        this.getTableData(`?startTime=${this.startTime}&stopTime=${this.stopTime}&dateType=${this.dateType}&oprType=withdraw&orderBy=created_at desc`)
       }
     },
     computed: {
@@ -144,10 +145,30 @@
     },
     mounted() {
       this.formatTime(this.rechargeTime, 'd')
-      this.getTableData(`?startTime=${this.startTime}&stopTime=${this.stopTime}&dateType=${this.dateType}&oprType=withdraw`)
+      this.getTableData(`?startTime=${this.startTime}&stopTime=${this.stopTime}&dateType=${this.dateType}&oprType=withdraw&orderBy=created_at desc`)
       this.$store.dispatch('getAssets', '?type=eth')
     },
     methods: {
+      rowClick(r) {
+        let startTime = ''
+        let stopTime = ''
+        if (r.dateStr.includes('至')) {
+          startTime = r.dateStr.split('至')[0].replace(/-/ig, '/') + ' 0:0:0'
+          stopTime = r.dateStr.split('至')[1].replace(/-/ig, '/') + ' 23:59:59'
+        } else {
+          if (r.dateStr.length > 7) {
+            startTime = r.dateStr.replace(/-/ig, '/') + ' 0:0:0'
+            stopTime = r.dateStr.replace(/-/ig, '/') + ' 23:59:59'
+          } else {
+            const mm = new Date(r.date).getMonth() + 1
+            const yy = new Date(r.date).getFullYear()
+            const temp = new Date(yy, mm, 0)
+            startTime = formatTime(new Date(r.date)).split(' ')[0] + ' 0:0:0'
+            stopTime = formatTime(temp).replace(/0:0:0/ig, '') + '23:59:59'
+          }
+        }
+        this.$router.push({ path: '/projectManage/projectData', query: { startTime, stopTime }})
+      },
       changeType(t) {
         this.getTableData(`?startTime=${this.startTime}&stopTime=${this.stopTime}&dateType=${t}&oprType=recharge`)
       },
